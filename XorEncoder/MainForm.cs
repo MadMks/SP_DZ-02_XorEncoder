@@ -57,7 +57,26 @@ namespace XorEncoder
 
             try
             {
-                fileStream = new FileStream(filePath, FileMode.Open);
+                fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
+
+                byte[] dataRead = new byte[(int)fileStream.Length];
+                byte[] dataKey = Encoding.Unicode.GetBytes(this.textBoxKey.Text);
+                byte[] dataResult = new byte[(int)fileStream.Length];
+
+                fileStream.Read(dataRead, 0, dataRead.Length);
+                this.progressBar.Maximum = dataRead.Length;
+
+                for (int i = 0; i < dataRead.Length; i++)
+                {
+                    dataResult[i] = (byte)(dataRead[i] ^ dataKey[i % dataKey.Length]);
+                    Console.WriteLine(dataResult[i]);
+
+                    this.progressBar.Value = i + 1;
+                    Thread.Sleep(2000);
+                }
+
+                fileStream.Position = 0;
+                fileStream.Write(dataResult, 0, dataResult.Length);
             }
             catch (Exception ex)
             {
