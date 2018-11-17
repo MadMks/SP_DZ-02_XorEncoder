@@ -15,6 +15,7 @@ namespace XorEncoder
     public partial class MainForm : Form
     {
         private bool isCancel = false;
+        private bool isDecoding = false;
 
         public MainForm()
         {
@@ -68,20 +69,34 @@ namespace XorEncoder
                 //byte[] dataKey = Encoding.Unicode.GetBytes(this.textBoxKey.Text);
                 int key = Convert.ToInt32(this.textBoxKey.Text);
                 byte[] dataResult = new byte[quantityByte];
+                long endPosition = fileStream.Length;   // конечная позиция записи.
+                int nBytes = 0;
 
-                while (fileStream.Position != fileStream.Length)
+                // Кодируем файл.
+                while (fileStream.Position != /*fileStream.Length*/endPosition)
                 {
-                    int nBytes = fileStream.Read(dataRead, 0, dataRead.Length);
-
+                    // Считываем блок.
+                    nBytes = fileStream.Read(dataRead, 0, dataRead.Length);
+                    // Кодируем блок.
                     for (int i = 0; i < nBytes; i++)
                     {
+                        Console.Write(dataRead[i] + " >>> ");
                         //dataResult[i] = (byte)(dataRead[i] ^ dataKey[i % dataKey.Length]);
                         dataResult[i] = (byte)(dataRead[i] ^ key);
                         Console.WriteLine(dataResult[i]);
+                        
                     }
+                    // Записываем блок.
                     fileStream.Position -= nBytes;
                     fileStream.Write(dataResult, 0, nBytes);
 
+                    // Отмена кодирования (декодирование).
+                    if (this.isCancel)
+                    {
+                        endPosition = fileStream.Position;
+                        fileStream.Position = 0;
+                        this.isCancel = false;
+                    }
                 }
             }
             catch (Exception ex)
