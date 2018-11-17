@@ -14,7 +14,13 @@ namespace XorEncoder
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Отмена действия.
+        /// </summary>
         private bool isCancel = false;
+        /// <summary>
+        /// Действие отменяется.
+        /// </summary>
         private bool isDecoding = false;
 
         public MainForm()
@@ -31,6 +37,10 @@ namespace XorEncoder
             this.textBoxKey.KeyPress += TextBoxKey_KeyPress;
         }
 
+        /// <summary>
+        /// Обработчик нажатия на textBox ключа.
+        /// Доступен ввод цифр и Backspace.
+        /// </summary>
         private void TextBoxKey_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
@@ -45,22 +55,18 @@ namespace XorEncoder
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Запуск метода >>> buttonStart_Click");
-
             if (this.IsEncodingAvailable())
             {
-                // TODO: если файл не занят!!!
-
                 this.ToggleButtons(false);
-
-                // TODO: запустить процес шифрования -> пул потоков.
+                
                 ThreadPool.QueueUserWorkItem(this.Encrypt);
             }
-
-
-            Console.WriteLine("Завершение метода >>> buttonStart_Click");
         }
 
+        /// <summary>
+        /// Доступно кодирование.
+        /// </summary>
+        /// <returns>true если кодирование файла доступно.</returns>
         private bool IsEncodingAvailable()
         {
             if (this.IsFileExists()
@@ -72,6 +78,10 @@ namespace XorEncoder
             return false;
         }
 
+        /// <summary>
+        /// Ключ введен.
+        /// </summary>
+        /// <returns>true если ключ введен, и содержит минимум 6 символов.</returns>
         private bool IsKeyEntered()
         {
             if (this.textBoxKey.Text.Length > 5)
@@ -87,6 +97,10 @@ namespace XorEncoder
             return false;
         }
 
+        /// <summary>
+        /// Файл существует.
+        /// </summary>
+        /// <returns>true если файл существует.</returns>
         private bool IsFileExists()
         {
             if (File.Exists(this.textBoxFileAddress.Text))
@@ -100,11 +114,11 @@ namespace XorEncoder
             return false;
         }
 
+        /// <summary>
+        /// Кодирование файла.
+        /// </summary>
         private void Encrypt(object state)
         {
-            Console.WriteLine("Запуск метода >>> Encrypt");
-
-
             string filePath = this.textBoxFileAddress.Text;
             FileStream fileStream = null;
 
@@ -134,9 +148,7 @@ namespace XorEncoder
                     // Кодируем блок.
                     for (int i = 0; i < nBytesRead; i++)
                     {
-                        Console.Write(dataRead[i] + " >>> ");
                         dataResult[i] = (byte)(dataRead[i] ^ key);
-                        Console.WriteLine(dataResult[i]);
 
                         this.ChangeValueProgressbar();
                     }
@@ -166,11 +178,11 @@ namespace XorEncoder
 
 
             this.ToggleButtons(true);
-
-            Console.WriteLine("Завершение метода >>> Encrypt");
-
         }
 
+        /// <summary>
+        /// Изменение значение progressBar.
+        /// </summary>
         private void ChangeValueProgressbar()
         {
             if (this.isDecoding)
@@ -183,7 +195,10 @@ namespace XorEncoder
             }
         }
 
-
+        /// <summary>
+        /// Переключение кнопок Старт и Отмена.
+        /// </summary>
+        /// <param name="isEnableStart">Включить кнопку Старт.</param>
         private void ToggleButtons(bool isEnableStart)
         {
             if (isEnableStart)
@@ -202,11 +217,9 @@ namespace XorEncoder
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
-            // TODO: поменять кнопки на Старт
             this.ToggleButtons(true);
 
             this.isCancel = true;
-            //Console.WriteLine(isCancel);
         }
 
         private void buttonOverview_Click(object sender, EventArgs e)
