@@ -34,6 +34,8 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.textBoxKey = new System.Windows.Forms.TextBox();
             this.buttonStart = new System.Windows.Forms.Button();
+            this.numericUpDownQuantityByte = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantityByte)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxFileAddress
@@ -73,7 +75,7 @@
             // 
             this.textBoxKey.Location = new System.Drawing.Point(13, 52);
             this.textBoxKey.Name = "textBoxKey";
-            this.textBoxKey.Size = new System.Drawing.Size(234, 21);
+            this.textBoxKey.Size = new System.Drawing.Size(143, 21);
             this.textBoxKey.TabIndex = 4;
             // 
             // buttonStart
@@ -86,11 +88,29 @@
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
+            // numericUpDownQuantityByte
+            // 
+            this.numericUpDownQuantityByte.Location = new System.Drawing.Point(172, 52);
+            this.numericUpDownQuantityByte.Maximum = new decimal(new int[] {
+            4096,
+            0,
+            0,
+            0});
+            this.numericUpDownQuantityByte.Name = "numericUpDownQuantityByte";
+            this.numericUpDownQuantityByte.Size = new System.Drawing.Size(63, 21);
+            this.numericUpDownQuantityByte.TabIndex = 8;
+            this.numericUpDownQuantityByte.Value = new decimal(new int[] {
+            4096,
+            0,
+            0,
+            0});
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(422, 134);
+            this.Controls.Add(this.numericUpDownQuantityByte);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.textBoxKey);
             this.Controls.Add(this.progressBar);
@@ -101,6 +121,7 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "XOR Encoder";
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantityByte)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,6 +135,7 @@
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.TextBox textBoxKey;
         private System.Windows.Forms.Button buttonStart;
+        private System.Windows.Forms.NumericUpDown numericUpDownQuantityByte;
     }
 }
 

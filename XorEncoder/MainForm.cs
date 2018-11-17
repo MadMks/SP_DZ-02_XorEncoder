@@ -14,6 +14,8 @@ namespace XorEncoder
 {
     public partial class MainForm : Form
     {
+        private bool isCancel = false;
+
         public MainForm()
         {
             InitializeComponent();
@@ -58,6 +60,58 @@ namespace XorEncoder
             try
             {
                 fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
+                
+                fileStream.Position = 0;
+                int quantityByte = Convert.ToInt32(this.numericUpDownQuantityByte.Value);
+                
+                byte[] dataRead = new byte[quantityByte];
+                //byte[] dataKey = Encoding.Unicode.GetBytes(this.textBoxKey.Text);
+                int key = Convert.ToInt32(this.textBoxKey.Text);
+                byte[] dataResult = new byte[quantityByte];
+
+                while (fileStream.Position != fileStream.Length)
+                {
+                    int nBytes = fileStream.Read(dataRead, 0, dataRead.Length);
+
+                    for (int i = 0; i < nBytes; i++)
+                    {
+                        //dataResult[i] = (byte)(dataRead[i] ^ dataKey[i % dataKey.Length]);
+                        dataResult[i] = (byte)(dataRead[i] ^ key);
+                        Console.WriteLine(dataResult[i]);
+                    }
+                    fileStream.Position -= nBytes;
+                    fileStream.Write(dataResult, 0, nBytes);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                fileStream?.Close();
+            }
+
+            //Thread.Sleep(5000);
+            this.ToggleButtons(true);
+
+            Console.WriteLine("Завершение метода >>> Encrypt");
+
+        }
+
+        private void EncryptBackup(object state)
+        {
+            Console.WriteLine("Запуск метода >>> Encrypt");
+
+            // TODO: метод шифрования.
+
+            string filePath = this.textBoxFileAddress.Text;
+            FileStream fileStream = null;
+
+            try
+            {
+                fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
 
                 byte[] dataRead = new byte[(int)fileStream.Length];
                 byte[] dataKey = Encoding.Unicode.GetBytes(this.textBoxKey.Text);
@@ -73,6 +127,11 @@ namespace XorEncoder
 
                     this.progressBar.Value = i + 1;
                     Thread.Sleep(2000);
+
+                    if (this.isCancel)
+                    {
+                        Console.WriteLine(">>> Cancel!");
+                    }
                 }
 
                 fileStream.Position = 0;
@@ -114,6 +173,9 @@ namespace XorEncoder
         {
             // TODO: поменять кнопки на Старт
             this.ToggleButtons(true);
+
+            this.isCancel = true;
+            //Console.WriteLine(isCancel);
         }
     }
 }
