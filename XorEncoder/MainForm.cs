@@ -34,8 +34,10 @@ namespace XorEncoder
         private void TextBoxKey_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
-            if (!Char.IsDigit(number))
+            Console.WriteLine(number);
+            Console.WriteLine((int)number);
+            if (!Char.IsDigit(number)
+                && (int)number != 8)
             {
                 e.Handled = true;
             }
@@ -44,28 +46,64 @@ namespace XorEncoder
         private void buttonStart_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Запуск метода >>> buttonStart_Click");
-            // Если проверки все успешны
 
-            // TODO: проверить наличие файла
-            // TODO: проверить наличие ключа
-            // TODO: ключ мин 6 символов
+            if (this.IsEncodingAvailable())
+            {
+                // TODO: если файл не занят!!!
 
-            // то переключит кнопки
-            // и запустить метод в пул потоков.
+                this.ToggleButtons(false);
 
-            this.ToggleButtons(false);
+                // TODO: запустить процес шифрования -> пул потоков.
+                ThreadPool.QueueUserWorkItem(this.Encrypt);
+            }
 
-            // TODO: запустить процес шифрования -> пул потоков.
-            ThreadPool.QueueUserWorkItem(this.Encrypt);
 
             Console.WriteLine("Завершение метода >>> buttonStart_Click");
+        }
+
+        private bool IsEncodingAvailable()
+        {
+            if (this.IsFileExists()
+                && this.IsKeyEntered())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsKeyEntered()
+        {
+            if (this.textBoxKey.Text.Length > 5)
+            {
+                return true;
+            }
+
+            MessageBox.Show("Длина ключа должна быть минимум 6 символов",
+                "Ошибка",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Asterisk);
+
+            return false;
+        }
+
+        private bool IsFileExists()
+        {
+            if (File.Exists(this.textBoxFileAddress.Text))
+            {
+                return true;
+            }
+
+            MessageBox.Show("Файл не найден", "Ошибка",
+                MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+
+            return false;
         }
 
         private void Encrypt(object state)
         {
             Console.WriteLine("Запуск метода >>> Encrypt");
 
-            // TODO: метод шифрования.
 
             string filePath = this.textBoxFileAddress.Text;
             FileStream fileStream = null;
@@ -126,7 +164,7 @@ namespace XorEncoder
                 fileStream?.Close();
             }
 
-            //Thread.Sleep(5000);
+
             this.ToggleButtons(true);
 
             Console.WriteLine("Завершение метода >>> Encrypt");
@@ -145,58 +183,6 @@ namespace XorEncoder
             }
         }
 
-        private void EncryptBackup(object state)
-        {
-            Console.WriteLine("Запуск метода >>> Encrypt");
-
-            // TODO: метод шифрования.
-
-            string filePath = this.textBoxFileAddress.Text;
-            FileStream fileStream = null;
-
-            try
-            {
-                fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
-
-                byte[] dataRead = new byte[(int)fileStream.Length];
-                byte[] dataKey = Encoding.Unicode.GetBytes(this.textBoxKey.Text);
-                byte[] dataResult = new byte[(int)fileStream.Length];
-
-                fileStream.Read(dataRead, 0, dataRead.Length);
-                this.progressBar.Maximum = dataRead.Length;
-
-                for (int i = 0; i < dataRead.Length; i++)
-                {
-                    dataResult[i] = (byte)(dataRead[i] ^ dataKey[i % dataKey.Length]);
-                    Console.WriteLine(dataResult[i]);
-
-                    this.progressBar.Value = i + 1;
-                    Thread.Sleep(2000);
-
-                    if (this.isCancel)
-                    {
-                        Console.WriteLine(">>> Cancel!");
-                    }
-                }
-
-                fileStream.Position = 0;
-                fileStream.Write(dataResult, 0, dataResult.Length);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                fileStream?.Close();
-            }
-
-            //Thread.Sleep(5000);
-            this.ToggleButtons(true);
-
-            Console.WriteLine("Завершение метода >>> Encrypt");
-
-        }
 
         private void ToggleButtons(bool isEnableStart)
         {
