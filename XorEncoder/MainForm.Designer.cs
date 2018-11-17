@@ -53,6 +53,7 @@
             this.buttonOverview.TabIndex = 1;
             this.buttonOverview.Text = "Обзор";
             this.buttonOverview.UseVisualStyleBackColor = true;
+            this.buttonOverview.Click += new System.EventHandler(this.buttonOverview_Click);
             // 
             // buttonStop
             // 

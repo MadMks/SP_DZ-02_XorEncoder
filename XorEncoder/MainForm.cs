@@ -208,5 +208,16 @@ namespace XorEncoder
             this.isCancel = true;
             //Console.WriteLine(isCancel);
         }
+
+        private void buttonOverview_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Выбор файла";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.textBoxFileAddress.Text = openFileDialog.FileName;
+            }
+        }
     }
 }
