@@ -60,6 +60,7 @@
             this.buttonStop.TabIndex = 2;
             this.buttonStop.Text = "Отмена";
             this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
             // 
             // progressBar
             // 
@@ -83,6 +84,7 @@
             this.buttonStart.TabIndex = 5;
             this.buttonStart.Text = "Старт";
             this.buttonStart.UseVisualStyleBackColor = true;
+            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
             // MainForm
             // 
