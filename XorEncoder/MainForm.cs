@@ -61,34 +61,38 @@ namespace XorEncoder
             try
             {
                 fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
-                
+
+                this.isDecoding = false;
                 fileStream.Position = 0;
-                int quantityByte = Convert.ToInt32(this.numericUpDownQuantityByte.Value);
-                
-                byte[] dataRead = new byte[quantityByte];
-                //byte[] dataKey = Encoding.Unicode.GetBytes(this.textBoxKey.Text);
+                this.progressBar.Maximum = (int)fileStream.Length;
+                this.progressBar.Value = 0;
+                // Кол-во байт для блока.
+                int nBytesInBlock = Convert.ToInt32(this.numericUpDownQuantityByte.Value);
+
+
+                byte[] dataRead = new byte[nBytesInBlock];
                 int key = Convert.ToInt32(this.textBoxKey.Text);
-                byte[] dataResult = new byte[quantityByte];
+                byte[] dataResult = new byte[nBytesInBlock];
                 long endPosition = fileStream.Length;   // конечная позиция записи.
-                int nBytes = 0;
+                int nBytesRead = 0; // кол-во считанных байт.
 
                 // Кодируем файл.
-                while (fileStream.Position != /*fileStream.Length*/endPosition)
+                while (fileStream.Position != endPosition)
                 {
                     // Считываем блок.
-                    nBytes = fileStream.Read(dataRead, 0, dataRead.Length);
+                    nBytesRead = fileStream.Read(dataRead, 0, dataRead.Length);
                     // Кодируем блок.
-                    for (int i = 0; i < nBytes; i++)
+                    for (int i = 0; i < nBytesRead; i++)
                     {
                         Console.Write(dataRead[i] + " >>> ");
-                        //dataResult[i] = (byte)(dataRead[i] ^ dataKey[i % dataKey.Length]);
                         dataResult[i] = (byte)(dataRead[i] ^ key);
                         Console.WriteLine(dataResult[i]);
-                        
+
+                        this.ChangeValueProgressbar();
                     }
                     // Записываем блок.
-                    fileStream.Position -= nBytes;
-                    fileStream.Write(dataResult, 0, nBytes);
+                    fileStream.Position -= nBytesRead;
+                    fileStream.Write(dataResult, 0, nBytesRead);
 
                     // Отмена кодирования (декодирование).
                     if (this.isCancel)
@@ -96,6 +100,8 @@ namespace XorEncoder
                         endPosition = fileStream.Position;
                         fileStream.Position = 0;
                         this.isCancel = false;
+
+                        this.isDecoding = true;
                     }
                 }
             }
@@ -113,6 +119,18 @@ namespace XorEncoder
 
             Console.WriteLine("Завершение метода >>> Encrypt");
 
+        }
+
+        private void ChangeValueProgressbar()
+        {
+            if (this.isDecoding)
+            {
+                this.progressBar.Value--;
+            }
+            else
+            {
+                this.progressBar.Value++;
+            }
         }
 
         private void EncryptBackup(object state)
