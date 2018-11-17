@@ -66,7 +66,7 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(13, 94);
+            this.progressBar.Location = new System.Drawing.Point(13, 90);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(396, 23);
             this.progressBar.TabIndex = 3;
@@ -99,6 +99,7 @@
             this.numericUpDownQuantityByte.Name = "numericUpDownQuantityByte";
             this.numericUpDownQuantityByte.Size = new System.Drawing.Size(63, 21);
             this.numericUpDownQuantityByte.TabIndex = 8;
+            this.numericUpDownQuantityByte.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownQuantityByte.Value = new decimal(new int[] {
             4096,
             0,
@@ -109,7 +110,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(422, 134);
+            this.ClientSize = new System.Drawing.Size(422, 129);
             this.Controls.Add(this.numericUpDownQuantityByte);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.textBoxKey);

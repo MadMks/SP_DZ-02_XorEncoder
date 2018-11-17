@@ -27,6 +27,18 @@ namespace XorEncoder
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.buttonStop.Enabled = false;
+
+            this.textBoxKey.KeyPress += TextBoxKey_KeyPress;
+        }
+
+        private void TextBoxKey_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+
+            if (!Char.IsDigit(number))
+            {
+                e.Handled = true;
+            }
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
