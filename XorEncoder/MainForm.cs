@@ -110,7 +110,7 @@ namespace XorEncoder
 
             try
             {
-                fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
+                fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
 
                 this.isDecoding = false;
                 fileStream.Position = 0;

@@ -60,7 +60,7 @@
             this.buttonStop.Location = new System.Drawing.Point(334, 51);
             this.buttonStop.Name = "buttonStop";
             this.buttonStop.Size = new System.Drawing.Size(75, 23);
-            this.buttonStop.TabIndex = 2;
+            this.buttonStop.TabIndex = 5;
             this.buttonStop.Text = "Отмена";
             this.buttonStop.UseVisualStyleBackColor = true;
             this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
@@ -70,21 +70,21 @@
             this.progressBar.Location = new System.Drawing.Point(13, 90);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(396, 23);
-            this.progressBar.TabIndex = 3;
+            this.progressBar.TabIndex = 10;
             // 
             // textBoxKey
             // 
             this.textBoxKey.Location = new System.Drawing.Point(13, 52);
             this.textBoxKey.Name = "textBoxKey";
             this.textBoxKey.Size = new System.Drawing.Size(143, 21);
-            this.textBoxKey.TabIndex = 4;
+            this.textBoxKey.TabIndex = 2;
             // 
             // buttonStart
             // 
             this.buttonStart.Location = new System.Drawing.Point(253, 51);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(75, 23);
-            this.buttonStart.TabIndex = 5;
+            this.buttonStart.TabIndex = 4;
             this.buttonStart.Text = "Старт";
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
@@ -99,7 +99,7 @@
             0});
             this.numericUpDownQuantityByte.Name = "numericUpDownQuantityByte";
             this.numericUpDownQuantityByte.Size = new System.Drawing.Size(63, 21);
-            this.numericUpDownQuantityByte.TabIndex = 8;
+            this.numericUpDownQuantityByte.TabIndex = 3;
             this.numericUpDownQuantityByte.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownQuantityByte.Value = new decimal(new int[] {
             4096,
